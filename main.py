@@ -10,7 +10,7 @@ from xpaths import *
 import re
 
 
-def get_main_info(driver: webdriver.Chrome, institution='ufopa'):
+def get_main_info(driver: webdriver.Chrome, username, password, institution='ufopa'):
     infos = {
         'name': '',
         'picture': '',
@@ -26,7 +26,7 @@ def get_main_info(driver: webdriver.Chrome, institution='ufopa'):
     }
 
     base_path = 'https://sigaa.' + institution + '.edu.br'
-    login(driver, base_path, 'ramon.pessoa', '0/@/e$01a')
+    login(driver, base_path, username, password)
 
     infos['name'] = driver.find_element(By.XPATH, MAIN_SPAN_NAME).text
 
@@ -73,7 +73,7 @@ def click_btn_restaurant(driver: webdriver.Chrome):
     actions.click(on_element=btn_restaurant).perform()
 
 
-def get_restaurant_info(driver: webdriver.Chrome, institution='ufopa'):
+def get_restaurant_info(driver: webdriver.Chrome, username, password, institution='ufopa'):
     infos = {
         'credits_available': '',
         'qr_code_picture': '',
@@ -82,7 +82,7 @@ def get_restaurant_info(driver: webdriver.Chrome, institution='ufopa'):
     }
 
     base_path_sigaa = 'https://sigaa.' + institution + '.edu.br/'
-    login(driver, base_path_sigaa, 'ramon.pessoa', '0/@/e$01a')
+    login(driver, base_path_sigaa, username, password)
     click_btn_restaurant(driver)
 
     WebDriverWait(driver, 10).until(
@@ -105,8 +105,13 @@ def get_restaurant_info(driver: webdriver.Chrome, institution='ufopa'):
     return infos
 
 
+# Local
 # chromedriver_autoinstaller.install()
+# driver = webdriver.Chrome()
+# actions = ActionChains(driver)
 
+
+# Heroku
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
@@ -114,6 +119,4 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(executable_path=os.environ.get(
     "CHROMEDRIVER_PATH"), options=chrome_options)
-
-driver = webdriver.Chrome(chrome_options=chrome_options)
 actions = ActionChains(driver)

@@ -40,8 +40,10 @@ def train(credentials: Credentials):
 
     for type in credentials.infos:
         if type == 'main':
-            infos['main'] = main.get_main_info(main.driver)
+            infos['main'] = main.get_main_info(
+                main.driver, credentials.username, credentials.password)
         if type == 'restaurant':
-            infos['restaurant'] = main.get_restaurant_info(main.driver)
+            infos['restaurant'] = main.get_restaurant_info(
+                main.driver, credentials.username, credentials.password)
 
     return infos
